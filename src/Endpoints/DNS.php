@@ -44,7 +44,7 @@ class DNS implements API
         bool $proxied = true,
         string $priority = '',
         array $data = []
-    ): bool {
+    ): array {
         $options = [
             'type' => $type,
             'name' => $name,
@@ -59,7 +59,7 @@ class DNS implements API
         if (is_numeric($priority)) {
             $options['priority'] = (int)$priority;
         }
-        
+
         if (!empty($data)) {
             $options['data'] = $data;
         }
@@ -69,10 +69,10 @@ class DNS implements API
         $this->body = json_decode($user->getBody());
 
         if (isset($this->body->result->id)) {
-            return true;
+            return [true, $this->body->result->id];
         }
 
-        return false;
+        return [false];
     }
 
     public function listRecords(
